@@ -56,6 +56,7 @@ export interface Standing {
   goalsFor: number;
   goalsAgainst: number;
   goalDifference: number;
+  form?: string | null;
 }
 
 export interface StandingsTable {
@@ -97,8 +98,10 @@ export interface Sport {
   icon: string;
   color: string;
   description: string;
-  activeLeagues: number;
-  liveMatches: number;
+  /** Number of leagues/competitions GoalPulse integrates for this sport. */
+  leagueCount: number;
+  /** Whether GoalPulse can show real live scores for this sport on the current API tier. */
+  hasLiveData: boolean;
 }
 
 // ─── TheSportsDB Types ────────────────────────────────────────────────────────
@@ -115,8 +118,9 @@ export interface SportsDBEvent {
   dateEvent: string;
   strTime: string;
   strStatus: string;
-  strThumb?: string;
-  strVenue?: string;
+  strThumb?: string | null;
+  strLeagueBadge?: string | null;
+  strVenue?: string | null;
 }
 
 export interface SportsDBTeam {

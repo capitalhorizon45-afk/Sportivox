@@ -38,9 +38,6 @@ function TeamCrest({
           alt={name}
           className="w-8 h-8 object-contain"
           loading="lazy"
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.display = "none";
-          }}
         />
       ) : (
         <div className="w-8 h-8 rounded-lg bg-surface-alt border border-border flex items-center justify-center text-[10px] font-bold text-muted">

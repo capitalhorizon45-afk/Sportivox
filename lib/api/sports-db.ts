@@ -31,9 +31,9 @@ export const LEAGUE_IDS = {
   LA_LIGA: "4335",
   BUNDESLIGA: "4331",
   SERIE_A: "4332",
-  IPL: "4590",         // Cricket - IPL
+  IPL: "4460",          // Cricket - Indian Premier League
   NBA: "4387",          // Basketball - NBA
-  ATP: "4424",          // Tennis - ATP
+  ATP: "4464",          // Tennis - ATP World Tour
 } as const;
 
 // ─── Events / Matches ─────────────────────────────────────────────────────────

@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { Calendar } from "lucide-react";
 import MatchCard from "@/components/ui/MatchCard";
-import { ApiKeyNotice } from "@/components/ui/ErrorState";
-import { fetchUpcomingMatches, hasFootballKey } from "@/lib/data-fetcher";
+import { fetchUpcomingMatches } from "@/lib/data-fetcher";
 import { formatMatchDate } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Fixtures",
   description: "Upcoming fixtures and match schedules for all major sports and leagues.",
 };
+
+// Fixture schedules come from a live third-party API — render per-request
+// rather than baking a snapshot into the build.
+export const dynamic = "force-dynamic";
 
 const LEAGUE_FILTERS = [
   { label: "All Leagues", value: "all" },
@@ -50,8 +53,6 @@ export default async function FixturesPage() {
             </div>
           </div>
         </div>
-
-        {!hasFootballKey && <ApiKeyNotice service="Football-Data.org" />}
 
         {/* League Filters */}
         <div className="flex items-center gap-2 mt-6 mb-8 overflow-x-auto pb-2">

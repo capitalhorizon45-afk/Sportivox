@@ -78,23 +78,3 @@ export default function ErrorState({
     </div>
   );
 }
-
-export function ApiKeyNotice({ service }: { service: string }) {
-  return (
-    <div className="flex items-start gap-3 p-4 bg-yellow-400/5 border border-yellow-400/20 rounded-xl">
-      <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-      <div>
-        <p className="text-sm font-medium text-yellow-400">
-          API key not configured
-        </p>
-        <p className="text-xs text-muted mt-0.5">
-          Add your <strong>{service}</strong> key to{" "}
-          <code className="px-1 py-0.5 bg-surface-alt rounded text-primary text-[11px]">
-            .env.local
-          </code>{" "}
-          to enable live data.
-        </p>
-      </div>
-    </div>
-  );
-}

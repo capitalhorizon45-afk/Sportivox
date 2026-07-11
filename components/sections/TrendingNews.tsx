@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { TrendingUp, ArrowRight } from "lucide-react";
 import NewsCard from "@/components/ui/NewsCard";
-import { MOCK_NEWS } from "@/lib/mock-data";
+import { fetchNews } from "@/lib/news";
 
-export default function TrendingNews() {
-  const featured = MOCK_NEWS.find((a) => a.featured) ?? MOCK_NEWS[0];
-  const others = MOCK_NEWS.filter((a) => a.id !== featured.id).slice(0, 4);
+export default async function TrendingNews() {
+  const news = await fetchNews().catch(() => []);
+  if (news.length === 0) return null;
+
+  const featured = news.find((a) => a.featured) ?? news[0];
+  const others = news.filter((a) => a.id !== featured.id).slice(0, 4);
 
   return (
     <section className="py-12">

@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { BarChart2, TrendingUp, TrendingDown, Minus } from "lucide-react";
-import { ApiKeyNotice } from "@/components/ui/ErrorState";
-import { fetchStandings, hasFootballKey } from "@/lib/data-fetcher";
+import { fetchStandings } from "@/lib/data-fetcher";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Standings",
   description: "League tables and standings for Premier League, La Liga, Bundesliga, Serie A, and more.",
 };
+
+// Standings depend on a live third-party API — render per-request so a
+// transient upstream failure surfaces as a normal request-time error
+// (handled by error.tsx) instead of failing the production build.
+export const dynamic = "force-dynamic";
 
 const LEAGUE_TABS = [
   { label: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League", value: "PL" },
@@ -48,19 +52,16 @@ function FormIndicator({ form }: { form: "W" | "D" | "L" }) {
   );
 }
 
-const MOCK_FORMS: ("W" | "D" | "L")[][] = [
-  ["W", "W", "W", "D", "W"],
-  ["W", "L", "W", "W", "D"],
-  ["W", "W", "D", "W", "L"],
-  ["W", "D", "W", "L", "W"],
-  ["D", "W", "W", "D", "L"],
-  ["L", "W", "D", "W", "W"],
-  ["W", "D", "L", "W", "D"],
-  ["D", "L", "W", "D", "W"],
-];
+function parseForm(form: string | null | undefined): ("W" | "D" | "L")[] {
+  if (!form) return [];
+  return form
+    .split(",")
+    .map((f) => f.trim())
+    .filter((f): f is "W" | "D" | "L" => f === "W" || f === "D" || f === "L");
+}
 
 export default async function StandingsPage() {
-  const { table: standings } = await fetchStandings("PL");
+  const { table: standings, season } = await fetchStandings("PL");
 
   return (
     <div className="pt-24 pb-16">
@@ -73,12 +74,10 @@ export default async function StandingsPage() {
             </div>
             <div>
               <h1 className="text-3xl font-black text-white">Standings</h1>
-              <p className="text-muted text-sm">League tables 2025/26</p>
+              <p className="text-muted text-sm">League table — {season}/{String(Number(season) + 1).slice(-2)} season</p>
             </div>
           </div>
         </div>
-
-        {!hasFootballKey && <ApiKeyNotice service="Football-Data.org" />}
 
         {/* League Tabs */}
         <div className="flex items-center gap-2 mt-6 mb-6 overflow-x-auto pb-2">
@@ -122,9 +121,9 @@ export default async function StandingsPage() {
           </div>
 
           {/* Rows */}
-          {standings.map((row, idx) => {
+          {standings.map((row) => {
             const zoneColor = getZoneColor(row.position);
-            const form = MOCK_FORMS[idx] ?? ["W", "D", "L", "W", "D"];
+            const form = parseForm(row.form);
             return (
               <div
                 key={row.team.id}
@@ -181,9 +180,11 @@ export default async function StandingsPage() {
 
                 {/* Form */}
                 <div className="hidden sm:flex items-center gap-0.5">
-                  {form.map((f, i) => (
-                    <FormIndicator key={i} form={f} />
-                  ))}
+                  {form.length > 0 ? (
+                    form.map((f, i) => <FormIndicator key={i} form={f} />)
+                  ) : (
+                    <span className="text-xs text-muted">—</span>
+                  )}
                 </div>
 
                 {/* Points */}

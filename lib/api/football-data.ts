@@ -78,17 +78,35 @@ export async function getCompetitionMatches(
   return data.matches;
 }
 
+/** Most recently finished matches for a competition, newest first. */
+export async function getRecentFinishedMatches(
+  competitionCode: string,
+  season?: string,
+  limit = 3
+): Promise<FootballDataMatch[]> {
+  const seasonParam = season ? `&season=${season}` : "";
+  const data = await footballDataFetch<{ matches: FootballDataMatch[] }>(
+    `/competitions/${competitionCode}/matches?status=FINISHED${seasonParam}`
+  );
+  return data.matches
+    .slice()
+    .sort((a, b) => new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime())
+    .slice(0, limit);
+}
+
 // ─── Standings ────────────────────────────────────────────────────────────────
 
 export async function getStandings(
-  competitionCode: string
+  competitionCode: string,
+  season?: string
 ): Promise<StandingsTable | null> {
   try {
+    const seasonParam = season ? `?season=${season}` : "";
     const data = await footballDataFetch<{
       competition: Competition;
       season: { startDate: string };
       standings: Array<{ type: string; table: StandingsTable["table"] }>;
-    }>(`/competitions/${competitionCode}/standings`);
+    }>(`/competitions/${competitionCode}/standings${seasonParam}`);
 
     const total = data.standings.find((s) => s.type === "TOTAL");
     if (!total) return null;

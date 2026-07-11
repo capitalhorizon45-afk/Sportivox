@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Grid3X3, ArrowRight } from "lucide-react";
 import SportCard from "@/components/ui/SportCard";
-import { MOCK_SPORTS } from "@/lib/mock-data";
+import { SPORTS_CATALOG } from "@/lib/sports-catalog";
+import { fetchLiveMatches } from "@/lib/data-fetcher";
 
-export default function SportsCategories() {
+export default async function SportsCategories() {
+  const liveMatches = await fetchLiveMatches().catch(() => []);
+
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,8 +29,12 @@ export default function SportsCategories() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {MOCK_SPORTS.map((sport) => (
-            <SportCard key={sport.id} sport={sport} />
+          {SPORTS_CATALOG.map((sport) => (
+            <SportCard
+              key={sport.id}
+              sport={sport}
+              liveCount={sport.category === "football" ? liveMatches.length : undefined}
+            />
           ))}
         </div>
       </div>

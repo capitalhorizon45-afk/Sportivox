@@ -11,6 +11,12 @@ export const metadata: Metadata = {
     "Your ultimate sports hub. Live scores, fixtures, standings, and breaking news for Football, Cricket, Basketball, and Tennis.",
 };
 
+// Renders per-request instead of at build time: this page depends on live
+// third-party sports APIs, so a transient upstream issue should surface as
+// a normal request-time error (handled by error.tsx) rather than failing
+// the whole production build.
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   return (
     <>

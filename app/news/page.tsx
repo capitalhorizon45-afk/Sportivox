@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import { Newspaper } from "lucide-react";
 import NewsCard from "@/components/ui/NewsCard";
-import { MOCK_NEWS } from "@/lib/mock-data";
+import { fetchNews } from "@/lib/news";
 
 export const metadata: Metadata = {
   title: "News",
   description: "Latest sports news, match reports, and analysis from Football, Cricket, Basketball, and Tennis.",
 };
+
+// News is derived from live match results across two third-party APIs —
+// render per-request rather than baking a snapshot into the build.
+export const dynamic = "force-dynamic";
 
 const CATEGORY_FILTERS = [
   { label: "All", value: "all" },
@@ -16,9 +20,25 @@ const CATEGORY_FILTERS = [
   { label: "🎾 Tennis", value: "tennis" },
 ];
 
-export default function NewsPage() {
-  const featured = MOCK_NEWS.find((a) => a.featured) ?? MOCK_NEWS[0];
-  const rest = MOCK_NEWS.filter((a) => a.id !== featured.id);
+export default async function NewsPage() {
+  const news = await fetchNews();
+
+  if (news.length === 0) {
+    return (
+      <div className="pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+          <Newspaper className="w-10 h-10 text-muted mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-white mb-2">No news right now</h1>
+          <p className="text-muted text-sm">
+            We couldn&apos;t find any recent match results to report on. Check back soon.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const featured = news.find((a) => a.featured) ?? news[0];
+  const rest = news.filter((a) => a.id !== featured.id);
 
   return (
     <div className="pt-24 pb-16">
@@ -32,7 +52,7 @@ export default function NewsPage() {
             <div>
               <h1 className="text-3xl font-black text-white">Sports News</h1>
               <p className="text-muted text-sm">
-                Latest stories from across the sporting world
+                Match reports generated from the latest real results
               </p>
             </div>
           </div>

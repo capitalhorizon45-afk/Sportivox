@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { Radio } from "lucide-react";
 import MatchCard from "@/components/ui/MatchCard";
-import { ApiKeyNotice } from "@/components/ui/ErrorState";
-import { fetchLiveMatches, hasFootballKey } from "@/lib/data-fetcher";
+import { fetchLiveMatches } from "@/lib/data-fetcher";
 
 export const metadata: Metadata = {
   title: "Live Scores",
   description: "Real-time live scores for Football, Cricket, Basketball and Tennis.",
 };
+
+// Live data changes constantly and comes from a third-party API — render
+// per-request rather than baking a snapshot into the build.
+export const dynamic = "force-dynamic";
 
 const SPORT_FILTERS = [
   { label: "All Sports", value: "all" },
@@ -43,8 +46,6 @@ export default async function LivePage() {
             )}
           </div>
         </div>
-
-        {!hasFootballKey && <ApiKeyNotice service="Football-Data.org" />}
 
         {/* Filters */}
         <div className="flex items-center gap-2 mt-6 mb-8 overflow-x-auto pb-2 scrollbar-hide">

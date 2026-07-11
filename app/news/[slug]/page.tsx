@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
-import { MOCK_NEWS } from "@/lib/mock-data";
+import { fetchNews } from "@/lib/news";
 import { formatRelativeTime } from "@/lib/utils";
 import NewsCard from "@/components/ui/NewsCard";
 
@@ -13,7 +13,8 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = MOCK_NEWS.find((a) => a.slug === slug);
+  const news = await fetchNews();
+  const article = news.find((a) => a.slug === slug);
   if (!article) return { title: "Article not found" };
   return {
     title: article.title,
@@ -22,17 +23,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  return MOCK_NEWS.map((article) => ({ slug: article.slug }));
+  const news = await fetchNews().catch(() => []);
+  return news.map((article) => ({ slug: article.slug }));
 }
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-  const article = MOCK_NEWS.find((a) => a.slug === slug);
+  const news = await fetchNews();
+  const article = news.find((a) => a.slug === slug);
   if (!article) notFound();
 
-  const related = MOCK_NEWS.filter(
-    (a) => a.id !== article.id && a.category === article.category
-  ).slice(0, 3);
+  const related = news
+    .filter((a) => a.id !== article.id && a.category === article.category)
+    .slice(0, 3);
 
   return (
     <div className="pt-24 pb-16">
@@ -83,29 +86,22 @@ export default async function ArticlePage({ params }: Props) {
         </div>
 
         {/* Hero Image */}
-        <div className="relative rounded-2xl overflow-hidden mb-8" style={{ aspectRatio: "16/9" }}>
+        <div className="relative rounded-2xl overflow-hidden mb-8 bg-surface flex items-center justify-center" style={{ aspectRatio: "16/9" }}>
           <Image
             src={article.imageUrl}
             alt={article.title}
             fill
             unoptimized
-            className="object-cover"
+            className="object-contain p-8"
             priority
           />
         </div>
 
-        {/* Article Content (placeholder) */}
+        {/* Article Content */}
         <div className="prose prose-invert max-w-none space-y-4 text-muted leading-relaxed">
-          <p>{article.excerpt}</p>
-          <p>
-            This is a demonstration article. In a production environment, this
-            would contain the full article content fetched from a CMS or news
-            API. The GoalPulse platform is designed to be easily extended with
-            any content source.
-          </p>
-          <p>
-            The layout supports rich text, images, pull quotes, and multimedia
-            embeds — all styled consistently with the GoalPulse design system.
+          <p>{article.content ?? article.excerpt}</p>
+          <p className="text-xs text-muted/70">
+            Source: {article.source ?? "GoalPulse"}
           </p>
         </div>
 

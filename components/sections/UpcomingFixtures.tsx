@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
 import MatchCard from "@/components/ui/MatchCard";
-import { MOCK_UPCOMING_MATCHES } from "@/lib/mock-data";
+import { fetchUpcomingMatches } from "@/lib/data-fetcher";
 
-export default function UpcomingFixtures() {
-  const fixtures = MOCK_UPCOMING_MATCHES;
+export default async function UpcomingFixtures() {
+  const fixtures = (await fetchUpcomingMatches("PL").catch(() => [])).slice(0, 4);
 
   return (
     <section className="py-12">
@@ -25,11 +25,15 @@ export default function UpcomingFixtures() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {fixtures.map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
-        </div>
+        {fixtures.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {fixtures.map((match) => (
+              <MatchCard key={match.id} match={match} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted text-sm">No upcoming fixtures scheduled.</p>
+        )}
       </div>
     </section>
   );

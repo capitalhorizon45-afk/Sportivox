@@ -4,10 +4,12 @@ import type { Sport } from "@/lib/types";
 
 interface SportCardProps {
   sport: Sport;
+  /** Real count of currently live matches for this sport, if known. */
+  liveCount?: number;
   className?: string;
 }
 
-export default function SportCard({ sport, className }: SportCardProps) {
+export default function SportCard({ sport, liveCount, className }: SportCardProps) {
   return (
     <Link
       href={`/sports?sport=${sport.category}`}
@@ -43,21 +45,30 @@ export default function SportCard({ sport, className }: SportCardProps) {
         <div className="flex items-center gap-4">
           <div className="flex flex-col">
             <span className="text-xl font-bold" style={{ color: sport.color }}>
-              {sport.activeLeagues}
+              {sport.leagueCount}
             </span>
-            <span className="text-xs text-muted">Leagues</span>
+            <span className="text-xs text-muted">
+              League{sport.leagueCount !== 1 ? "s" : ""}
+            </span>
           </div>
           <div className="w-px h-8 bg-border" />
           <div className="flex flex-col">
-            <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold text-secondary">
-                {sport.liveMatches}
-              </span>
-              {sport.liveMatches > 0 && (
-                <span className="live-dot w-2 h-2" />
-              )}
-            </div>
-            <span className="text-xs text-muted">Live Now</span>
+            {sport.hasLiveData ? (
+              <>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xl font-bold text-secondary">
+                    {liveCount ?? 0}
+                  </span>
+                  {!!liveCount && <span className="live-dot w-2 h-2" />}
+                </div>
+                <span className="text-xs text-muted">Live Now</span>
+              </>
+            ) : (
+              <>
+                <span className="text-xl font-bold text-muted">—</span>
+                <span className="text-xs text-muted">No live data</span>
+              </>
+            )}
           </div>
         </div>
       </div>

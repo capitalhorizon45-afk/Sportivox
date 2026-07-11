@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { Radio, ArrowRight } from "lucide-react";
 import MatchCard from "@/components/ui/MatchCard";
-import { MatchCardSkeleton } from "@/components/ui/LoadingSkeleton";
-import { MOCK_LIVE_MATCHES } from "@/lib/mock-data";
+import { fetchLiveMatches } from "@/lib/data-fetcher";
 
-export default function FeaturedMatches() {
-  const matches = MOCK_LIVE_MATCHES;
+export default async function FeaturedMatches() {
+  const matches = await fetchLiveMatches().catch(() => []);
 
   return (
     <section className="py-12">
@@ -35,11 +34,13 @@ export default function FeaturedMatches() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <MatchCardSkeleton key={i} />
-            ))}
-          </div>
+          <p className="text-muted text-sm">
+            No football matches in play right now. Check back soon or view{" "}
+            <Link href="/fixtures" className="text-primary hover:underline">
+              upcoming fixtures
+            </Link>
+            .
+          </p>
         )}
       </div>
     </section>
