@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Zap, Radio, BarChart2, Newspaper, Globe, Code2, ArrowRight } from "lucide-react";
+import { Zap, Radio, BarChart2, Newspaper, Globe, Code2, ArrowRight, Target, Heart, ShieldCheck } from "lucide-react";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -40,6 +41,30 @@ const FEATURES = [
   },
 ];
 
+const MISSION_VALUES = [
+  {
+    icon: Target,
+    color: "#00C8FF",
+    title: "Real data, no shortcuts",
+    description:
+      "Every score, fixture, and table you see comes from a licensed data provider — never invented or simulated to fill a gap.",
+  },
+  {
+    icon: ShieldCheck,
+    color: "#22C55E",
+    title: "Honest about our limits",
+    description:
+      "When a sport doesn't have real live data on our current tier, or a report is machine-generated rather than staff-written, we say so plainly.",
+  },
+  {
+    icon: Heart,
+    color: "#A855F7",
+    title: "Built for fans, not for noise",
+    description:
+      "One clean interface for four sports — no clutter, no autoplay video, no dark patterns designed to keep you scrolling.",
+  },
+];
+
 const TECH_STACK = [
   { name: "Next.js 15", description: "App Router + Server Components" },
   { name: "TypeScript", description: "Full type safety throughout" },
@@ -53,6 +78,8 @@ export default function AboutPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "About" }]} />
+
         {/* Hero */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 badge-primary mb-6">
@@ -68,6 +95,38 @@ export default function AboutPage() {
             scores, fixtures, standings, and news for Football, Cricket, Basketball,
             and Tennis — all in a premium, fast, and responsive interface.
           </p>
+        </div>
+
+        {/* Mission */}
+        <div className="max-w-3xl mx-auto mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">
+              Our mission
+            </h2>
+            <p className="text-muted leading-relaxed">
+              Give sports fans one fast, honest place to check what&apos;s
+              happening right now — without wading through ads, invented
+              stats, or a dozen different apps for a dozen different sports.
+              If we show it, it&apos;s because it&apos;s real.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {MISSION_VALUES.map(({ icon: Icon, color, title, description }) => (
+              <div
+                key={title}
+                className="bg-surface rounded-2xl border border-border p-5 text-center"
+              >
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 mx-auto"
+                  style={{ background: `${color}15`, border: `1px solid ${color}25` }}
+                >
+                  <Icon className="w-5 h-5" style={{ color }} />
+                </div>
+                <h3 className="text-white font-semibold text-sm mb-2">{title}</h3>
+                <p className="text-muted text-xs leading-relaxed">{description}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Features */}
@@ -162,10 +221,15 @@ export default function AboutPage() {
 
         {/* CTA */}
         <div className="text-center">
-          <Link href="/live" className="btn-primary text-base px-8 py-3 inline-flex">
-            <Radio className="w-4 h-4" />
-            Explore Live Scores
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link href="/live" className="btn-primary text-base px-8 py-3 inline-flex">
+              <Radio className="w-4 h-4" />
+              Explore Live Scores
+            </Link>
+            <Link href="/faq" className="btn-ghost text-base px-8 py-3 inline-flex">
+              Read the FAQ
+            </Link>
+          </div>
         </div>
       </div>
     </div>

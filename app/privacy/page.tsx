@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Shield } from "lucide-react";
 import LegalSection from "@/components/ui/LegalSection";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -17,6 +18,8 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
+
         {/* Hero */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 badge-primary mb-6">

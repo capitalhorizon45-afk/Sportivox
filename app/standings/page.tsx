@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BarChart2, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { fetchStandings } from "@/lib/data-fetcher";
 import { cn } from "@/lib/utils";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -69,6 +70,8 @@ export default async function StandingsPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "Standings" }]} />
+
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -87,6 +90,8 @@ export default async function StandingsPage() {
           {LEAGUE_TABS.map(({ label, value }) => (
             <button
               key={value}
+              type="button"
+              aria-pressed={value === "PL"}
               className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 value === "PL"
                   ? "bg-primary text-background"

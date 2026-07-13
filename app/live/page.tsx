@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Radio } from "lucide-react";
 import MatchCard from "@/components/ui/MatchCard";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { fetchLiveMatches } from "@/lib/data-fetcher";
 import { buildMetadata } from "@/lib/seo";
 
@@ -29,6 +30,8 @@ export default async function LivePage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "Live Scores" }]} />
+
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -55,6 +58,8 @@ export default async function LivePage() {
           {SPORT_FILTERS.map(({ label, value }) => (
             <button
               key={value}
+              type="button"
+              aria-pressed={value === "all"}
               className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 value === "all"
                   ? "bg-primary text-background"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Calendar } from "lucide-react";
 import MatchCard from "@/components/ui/MatchCard";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { fetchUpcomingMatches } from "@/lib/data-fetcher";
 import { formatMatchDate } from "@/lib/utils";
 import { buildMetadata } from "@/lib/seo";
@@ -42,6 +43,8 @@ export default async function FixturesPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "Fixtures" }]} />
+
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -62,6 +65,8 @@ export default async function FixturesPage() {
           {LEAGUE_FILTERS.map(({ label, value }) => (
             <button
               key={value}
+              type="button"
+              aria-pressed={value === "all"}
               className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 value === "all"
                   ? "bg-primary text-background"

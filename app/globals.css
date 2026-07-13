@@ -198,3 +198,33 @@ body {
 .bg-hero-gradient {
   background: linear-gradient(135deg, #0B0B0F 0%, #0f1a2e 50%, #0B0B0F 100%);
 }
+
+/* ─── Accessibility ────────────────────────────────────────────────────────── */
+
+/* Sitewide visible keyboard-focus ring. Written unlayered (outside Tailwind's
+   `@layer utilities`) so it wins over component-level `focus:outline-none`
+   utilities for keyboard users, while mouse/touch focus is unaffected. */
+:focus-visible {
+  outline: 2px solid #00C8FF;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip-to-content link: visually hidden until keyboard-focused. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #00C8FF;
+  color: #0B0B0F;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}

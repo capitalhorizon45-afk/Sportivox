@@ -6,6 +6,7 @@ import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
 import { fetchNews } from "@/lib/news";
 import { formatRelativeTime } from "@/lib/utils";
 import NewsCard from "@/components/ui/NewsCard";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { SITE_NAME, SITE_URL, TWITTER_HANDLE, articleSchema } from "@/lib/seo";
 
 interface Props {
@@ -68,6 +69,13 @@ export default async function ArticlePage({ params }: Props) {
         }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { label: "News", href: "/news" },
+            { label: article.title },
+          ]}
+        />
+
         {/* Back */}
         <Link
           href="/news"

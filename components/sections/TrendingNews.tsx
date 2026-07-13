@@ -34,7 +34,7 @@ export default async function TrendingNews() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* Featured big card */}
           <div className="lg:col-span-3">
-            <NewsCard article={featured} variant="featured" className="h-full" />
+            <NewsCard article={featured} variant="featured" className="h-full" priority />
           </div>
 
           {/* Side cards */}

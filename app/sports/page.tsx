@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Grid3X3 } from "lucide-react";
 import SportCard from "@/components/ui/SportCard";
 import MatchCard from "@/components/ui/MatchCard";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { SPORTS_CATALOG } from "@/lib/sports-catalog";
 import { fetchLiveMatches, fetchUpcomingMatches } from "@/lib/data-fetcher";
 import { buildMetadata } from "@/lib/seo";
@@ -25,6 +26,8 @@ export default async function SportsPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "Sports" }]} />
+
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-2">

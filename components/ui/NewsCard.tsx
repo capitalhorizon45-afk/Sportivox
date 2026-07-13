@@ -8,6 +8,8 @@ interface NewsCardProps {
   article: NewsArticle;
   variant?: "default" | "featured" | "compact";
   className?: string;
+  /** Mark true when this card's image is the page's likely LCP element. */
+  priority?: boolean;
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -22,6 +24,7 @@ export default function NewsCard({
   article,
   variant = "default",
   className,
+  priority = false,
 }: NewsCardProps) {
   const categoryStyle =
     CATEGORY_COLORS[article.category] ?? CATEGORY_COLORS.general;
@@ -41,6 +44,7 @@ export default function NewsCard({
           alt={article.title}
           fill
           unoptimized
+          priority={priority}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />

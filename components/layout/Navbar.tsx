@@ -80,6 +80,7 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
+                  aria-current={isActive ? "page" : undefined}
                   className={cn(
                     "flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                     isActive
@@ -107,6 +108,8 @@ export default function Navbar() {
               onClick={() => setSearchOpen(!searchOpen)}
               className="p-2 rounded-xl text-muted hover:text-white hover:bg-surface-alt transition-all duration-200"
               aria-label="Search"
+              aria-expanded={searchOpen}
+              aria-controls="navbar-search-bar"
             >
               <Search className="w-4.5 h-4.5 w-[18px] h-[18px]" />
             </button>
@@ -117,6 +120,7 @@ export default function Navbar() {
               className="lg:hidden p-2 rounded-xl text-muted hover:text-white hover:bg-surface-alt transition-all duration-200"
               aria-label="Toggle menu"
               aria-expanded={isOpen}
+              aria-controls="navbar-mobile-menu"
             >
               {isOpen ? (
                 <X className="w-5 h-5" />
@@ -129,6 +133,8 @@ export default function Navbar() {
 
         {/* Search Bar */}
         <div
+          id="navbar-search-bar"
+          aria-hidden={!searchOpen}
           className={cn(
             "overflow-hidden transition-all duration-300",
             searchOpen ? "max-h-16 pb-3" : "max-h-0"
@@ -139,6 +145,7 @@ export default function Navbar() {
             <input
               type="text"
               placeholder="Search teams, leagues, players…"
+              tabIndex={searchOpen ? 0 : -1}
               className="w-full pl-9 pr-4 py-2.5 bg-surface border border-border rounded-xl text-sm text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
               autoFocus={searchOpen}
             />
@@ -148,6 +155,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
+        id="navbar-mobile-menu"
+        aria-hidden={!isOpen}
         className={cn(
           "lg:hidden overflow-hidden transition-all duration-300 glass border-t border-border",
           isOpen ? "max-h-[500px]" : "max-h-0 border-t-0"
@@ -161,6 +170,8 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
+                aria-current={isActive ? "page" : undefined}
+                tabIndex={isOpen ? 0 : -1}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
                   isActive

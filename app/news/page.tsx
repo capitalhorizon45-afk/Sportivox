@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newspaper } from "lucide-react";
 import NewsCard from "@/components/ui/NewsCard";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { fetchNews } from "@/lib/news";
 import { buildMetadata } from "@/lib/seo";
 
@@ -46,6 +47,8 @@ export default async function NewsPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Breadcrumbs items={[{ label: "News" }]} />
+
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -66,6 +69,8 @@ export default async function NewsPage() {
           {CATEGORY_FILTERS.map(({ label, value }) => (
             <button
               key={value}
+              type="button"
+              aria-pressed={value === "all"}
               className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 value === "all"
                   ? "bg-primary text-background"
@@ -79,7 +84,7 @@ export default async function NewsPage() {
 
         {/* Featured Article */}
         <div className="mb-8">
-          <NewsCard article={featured} variant="featured" />
+          <NewsCard article={featured} variant="featured" priority />
         </div>
 
         {/* Article Grid */}
