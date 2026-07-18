@@ -49,8 +49,8 @@ export default function Footer() {
                 <Zap className="w-5 h-5 text-primary relative z-10" />
               </div>
               <span className="text-lg font-bold">
-                <span className="text-gradient-primary">Goal</span>
-                <span className="text-white">Pulse</span>
+                <span className="text-gradient-primary">Sporti</span>
+                <span className="text-white">vox</span>
               </span>
             </Link>
             <p className="text-muted text-sm leading-relaxed mb-5">

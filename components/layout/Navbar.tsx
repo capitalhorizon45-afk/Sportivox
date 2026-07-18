@@ -66,8 +66,8 @@ export default function Navbar() {
               <Zap className="w-5 h-5 text-primary relative z-10" />
             </div>
             <span className="text-lg font-bold tracking-tight">
-              <span className="text-gradient-primary">Goal</span>
-              <span className="text-white">Pulse</span>
+              <span className="text-gradient-primary">Sporti</span>
+              <span className="text-white">vox</span>
             </span>
           </Link>
 
